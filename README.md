@@ -5,6 +5,8 @@ A Rust executable that accomplishes the following:
 - Combines person and purchase information from Ultimate Central data exports
 - Cleans some Peronsally Identifiable Information (PII) from the data
 
+This executable is only useful if you have the permissions to export these data from our website.
+
 ## Usage
 
 `clean-pii` requires three things:
