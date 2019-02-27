@@ -144,7 +144,7 @@ dependencies = [
 [[package]]
 name = "hashids"
 version = "1.0.0"
-source = "git+https://github.com/gadomski/hashids_rust#81e696024e4273f65780ad00793c3666acc5dda8"
+source = "git+https://github.com/gadomski/hashids_rust#e53e44c2f556f0ae51973be3a321eb3c9b321a7c"
 dependencies = [
  "failure 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 0.1.80 (registry+https://github.com/rust-lang/crates.io-index)",
