@@ -1,6 +1,6 @@
 # clean-pii
 
-A Rust executable that accomplishes to tasks:
+A Rust executable that accomplishes the following:
 
 - Combines person and purchase information from Ultimate Central data exports
 - Cleans some Peronsally Identifiable Information (PII) from the data
