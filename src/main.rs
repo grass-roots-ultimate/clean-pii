@@ -26,7 +26,7 @@ fn main() -> Result<(), failure::Error> {
     let matches = App::new("Data Analysis Action Group")
         .arg(
             Arg::with_name("PLAYERS")
-                .help("The csv file containing the players")
+                .help("The csv file containing the people")
                 .required(true)
                 .index(1),
         )
@@ -45,8 +45,8 @@ fn main() -> Result<(), failure::Error> {
         .get_matches();
     let mut writer = Writer::from_writer(io::stdout());
     let mut reader = Reader::from_path(matches.value_of("PLAYERS").unwrap())?;
-    let players = reader.deserialize().collect::<Result<Vec<Person>, _>>()?;
-    let record_builder = RecordBuilder::new(players, matches.value_of("SALT").unwrap())?;
+    let people = reader.deserialize().collect::<Result<Vec<Person>, _>>()?;
+    let record_builder = RecordBuilder::new(people, matches.value_of("SALT").unwrap())?;
     for entry in fs::read_dir(matches.value_of("PURCHASES").unwrap())? {
         let mut reader = Reader::from_path(entry?.path())?;
         for result in reader.deserialize() {
@@ -91,7 +91,7 @@ struct Person {
 
 #[derive(Debug, Serialize)]
 struct Record {
-    player_id: String,
+    person_id: String,
     gender: String,
     birth_year: Option<i32>,
     zcta: String,
@@ -115,7 +115,7 @@ struct Record {
 #[derive(Debug)]
 struct RecordBuilder {
     hash_ids: HashIds,
-    players: HashMap<i64, Person>,
+    people: HashMap<i64, Person>,
 }
 
 #[derive(Debug, Fail)]
@@ -125,9 +125,9 @@ enum Error {
 }
 
 impl RecordBuilder {
-    fn new(players: Vec<Person>, salt: &str) -> Result<RecordBuilder, failure::Error> {
+    fn new(people: Vec<Person>, salt: &str) -> Result<RecordBuilder, failure::Error> {
         Ok(RecordBuilder {
-            players: players
+            people: people
                 .into_iter()
                 .map(|person| (person.id, person))
                 .collect(),
@@ -137,13 +137,13 @@ impl RecordBuilder {
 
     fn with_purchase(&self, purchase: Purchase) -> Result<Record, Error> {
         let person = self
-            .players
+            .people
             .get(&purchase.person_id)
             .ok_or(Error::MissingPerson {
                 id: purchase.person_id,
             })?;
         Ok(Record {
-            player_id: self.hash_ids.encode(&vec![person.id]),
+            person_id: self.hash_ids.encode(&vec![person.id]),
             gender: person.gender.clone(),
             birth_year: person.birth_date.map(|date| date.year()),
             zcta: postal_code_to_zcta(&person.postal_code),
