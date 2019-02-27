@@ -25,7 +25,7 @@ const NULL_ZCTA: &'static str = "000";
 fn main() -> Result<(), failure::Error> {
     let matches = App::new("Data Analysis Action Group")
         .arg(
-            Arg::with_name("PLAYERS")
+            Arg::with_name("PEOPLE")
                 .help("The csv file containing the people")
                 .required(true)
                 .index(1),
@@ -44,7 +44,7 @@ fn main() -> Result<(), failure::Error> {
         )
         .get_matches();
     let mut writer = Writer::from_writer(io::stdout());
-    let mut reader = Reader::from_path(matches.value_of("PLAYERS").unwrap())?;
+    let mut reader = Reader::from_path(matches.value_of("PEOPLE").unwrap())?;
     let people = reader.deserialize().collect::<Result<Vec<Person>, _>>()?;
     let record_builder = RecordBuilder::new(people, matches.value_of("SALT").unwrap())?;
     for entry in fs::read_dir(matches.value_of("PURCHASES").unwrap())? {
