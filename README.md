@@ -29,3 +29,4 @@ The following cleaning operations are performed:
 1. Many obvious fields are dropped on the floor (name, address, etc)
 2. Zip codes are transformed into Zip Code Tabulation Areas, as recommended [for HIPAA compliance](https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html#zip)
 3. Person ids are encoded to prevent reverse URL lookups of people via their id
+4. Birth date is reduced to birth year
